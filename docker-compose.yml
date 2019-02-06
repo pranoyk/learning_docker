@@ -1,0 +1,21 @@
+version: '3'
+services:
+
+  data:
+    image: postgres:9.6.1
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: mypassword
+    volumes:
+    - "psql-data:/var/lib/postgresql/data"
+
+  web:
+    build: .
+    ports:
+      - "3000:3000"
+    depends_on:
+      - data
+
+volumes:
+  psql-data:
