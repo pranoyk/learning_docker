@@ -6,28 +6,24 @@ client.connect().then(()=>{
   app.listen(3000,()=>{console.log("Listening...")});
 }).catch(err=>console.log(err));
 
-const doesTableExist = () => {
-	client.query(`SELECT * FROM students`, (err, res) => {
-		return err? true: false;
-	})
-};
-
 app.get('/', (req, res) => {
+	client.query(`CREATE TABLE IF NOT EXISTS students(name VARCHAR)`);
 	client.query(`SELECT * FROM students`)
 		.then(resp=>{
 			console.log(resp.rows);
 		});
 	res.send("Chal raha hai!!");
 }
-)
+);
 
 app.post('/info', (req, res) => {
 	req.on('data',(data)=>{
 		client.query(`INSERT INTO students VALUES (${data.toString()})`);
-	})
+		console.log(data.toString());
+	});
 	req.on('end', () => {
   		res.send("END");
 	})
 	}
-)	
+)	;
 
