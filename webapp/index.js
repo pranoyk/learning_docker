@@ -1,6 +1,6 @@
 const app = require("express")();
 const pg = require("pg");
-let connectionString = "postgresql://postgres:mypassword@data:5432/postgres";
+let connectionString = process.env.DATABASE_URL;
 const client = new pg.Client(connectionString);
 client.connect().then(()=>{
   app.listen(3000,()=>{console.log("Listening...")});

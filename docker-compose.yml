@@ -1,6 +1,16 @@
 version: '3'
 services:
 
+  proxy_server:
+    build: ./proxy_server
+    ports:
+    - "5000:5000"
+    environment:
+    - HOST_1=web1
+    - HOST_2=web2
+    - PORT_1=3000
+    - PORT_2=3001
+
   data:
     image: postgres:9.6.1
     restart: always
@@ -11,25 +21,22 @@ services:
     - "psql-data:/var/lib/postgresql/data"
 
   web1:
-    build: .
+    build: ./webapp
     ports:
-      - "3000:3000"
+    - "3000:3000"
     depends_on:
-      - data
+    - data
+    environment:
+    - DATABASE_URL=postgresql://postgres:mypassword@data:5432/postgres
 
   web2:
-    build: .
+    build: ./webapp
     ports:
     - "3001:3000"
     depends_on:
     - data
-
-  web3:
-    build: .
-    ports:
-    - "3002:3000"
-    depends_on:
-    - data
+    environment:
+    - DATABASE_URL=postgresql://postgres:mypassword@data:5432/postgres
 
 volumes:
   psql-data:
