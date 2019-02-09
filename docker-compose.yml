@@ -8,8 +8,7 @@ services:
     environment:
     - HOST_1=web1
     - HOST_2=web2
-    - PORT_1=3000
-    - PORT_2=3001
+    - PORT=3000
 
   data:
     image: postgres:9.6.1
@@ -22,8 +21,6 @@ services:
 
   web1:
     build: ./webapp
-    ports:
-    - "3000:3000"
     depends_on:
     - data
     environment:
@@ -31,8 +28,6 @@ services:
 
   web2:
     build: ./webapp
-    ports:
-    - "3001:3000"
     depends_on:
     - data
     environment:
